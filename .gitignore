@@ -1,0 +1,8 @@
+/src/vendor/
+/src/templates_c/
+/src/cache/
+/src/composer.lock
+.env
+.DS_Store
+/src/public/uploads/*
+!/src/public/uploads/.gitkeep

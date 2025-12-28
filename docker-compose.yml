@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blog_php
+    volumes:
+      - ./src:/var/www/html
+      - ./php.ini:/usr/local/etc/php/php.ini
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - blog_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: blog_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog_db
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: blog_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - blog_network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: blog_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: blog_user
+      PMA_PASSWORD: blog_password
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - blog_network
+
+volumes:
+  mysql_data:
+
+networks:
+  blog_network:
+    driver: bridge
