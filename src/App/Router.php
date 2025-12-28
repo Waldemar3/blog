@@ -43,6 +43,15 @@ class Router
     private function notFound(): void
     {
         http_response_code(404);
-        require __DIR__ . '/../public/index.php';
+
+        require_once __DIR__ . '/../vendor/autoload.php';
+
+        $smarty = new \Smarty();
+        $smarty->setTemplateDir(__DIR__ . '/../templates');
+        $smarty->setCompileDir(__DIR__ . '/../templates_c');
+        $smarty->setCacheDir(__DIR__ . '/../cache');
+
+        $smarty->assign('pageTitle', 'Страница не найдена');
+        $smarty->display('pages/404.tpl');
     }
 }
